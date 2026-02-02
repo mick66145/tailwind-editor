@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import draggable from 'vuedraggable'
 import { useEditor } from '../../composables/useEditor'
+import * as PhosphorIcons from '@phosphor-icons/vue'
 
 import { PhCopy, PhTrash } from '@phosphor-icons/vue'
 
@@ -51,7 +52,7 @@ const handleContextMenu = (e) => {
     <div v-if="isSelected && !isPreview"
       class="absolute -top-7 right-0 h-7 bg-blue-600 flex items-center px-1 rounded-t-md z-[50] shadow-sm select-none animate-fade-in">
       <span class="text-[10px] font-bold text-white px-2 uppercase cursor-grab active:cursor-grabbing">{{ element.type
-        }}</span>
+      }}</span>
       <div class="w-px h-3 bg-white/20 mx-1"></div>
       <button @click.stop="duplicateComponent(element.id)"
         class="p-1 hover:bg-blue-500 text-white rounded transition-colors" title="Duplicate">
@@ -75,7 +76,7 @@ const handleContextMenu = (e) => {
     <!-- CONTENT: BUTTON -->
     <div v-else-if="element.type === 'button'">
       <button :class="elementClass || 'px-4 py-2 bg-blue-600 text-white rounded'">{{ element.props.text || 'Click Me'
-      }}</button>
+        }}</button>
     </div>
 
     <!-- CONTENT: IMAGE -->
@@ -84,6 +85,11 @@ const handleContextMenu = (e) => {
       <div v-else :class="elementClass" class="w-full h-32 bg-gray-200 flex items-center justify-center text-gray-400">
         Image Placeholder
       </div>
+    </div>
+
+    <!-- CONTENT: ICON -->
+    <div v-else-if="element.type === 'icon'" class="flex justify-center">
+      <component :is="PhosphorIcons[element.props.icon || 'PhStar']" :class="elementClass" />
     </div>
 
     <!-- CONTENT: DIVIDER -->

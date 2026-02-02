@@ -35,6 +35,33 @@ const colors = [
     { label: 'Pink', value: 'bg-pink-500' },
 ]
 
+// Extract URL from bg-[url('...')]
+const getBgImage = (bgClass) => {
+    if (!bgClass || !bgClass.includes('bg-[url')) return ''
+    const match = bgClass.match(/bg-\[url\('?(.*?)'?\)\]/)
+    return match ? match[1] : ''
+}
+
+const updateBgImage = (url) => {
+    const newTw = { ...props.modelValue }
+
+    if (!url) {
+        // Clear bg image class but keep color if any? 
+        // Current logic puts everything in 'bg'. 
+        // If we want mixed color + image, we need separate keys or handling.
+        // For now, assume BG is either Color OR Image for this simple input.
+        newTw.bg = ''
+        newTw.bgSize = ''
+        newTw.bgPosition = ''
+    } else {
+        // Tailwind arbitrary value format
+        newTw.bg = `bg-[url('${url}')]`
+        // Default to cover/center if new image
+        if (!newTw.bgSize) newTw.bgSize = 'bg-cover'
+        if (!newTw.bgPosition) newTw.bgPosition = 'bg-center'
+    }
+    emit('update:modelValue', newTw)
+}
 </script>
 
 <template>
@@ -58,13 +85,25 @@ const colors = [
             </div>
         </div>
 
-        <!-- Image URL -->
-        <!-- Only show if needed or separate component? Let's add simple visual URL input -->
-        <!-- Note: `bg-` classes in Tailwind usually expect utility. Custom URL needs inline style or specific config. 
-         For now let's assume `src` prop handles image content for Image widgets, but for Background Images on Containers...
-         That's harder with pure Tailwind classes without arbitrary values like `bg-[url(...)]`.
-         Let's stick to color for now for Phase 7 MVP or simple arbitrary values.
-    -->
+        <!-- Background Image -->
+        <div class="pt-2 border-t border-editor-border mt-2">
+            <label class="text-[10px] text-editor-text-muted mb-1 block">Image URL</label>
+            <input type="text" :value="getBgImage(modelValue.bg)" @input="e => updateBgImage(e.target.value)"
+                placeholder="https://..."
+                class="w-full bg-editor-input-bg border border-editor-input-border text-xs text-editor-text rounded-sm px-2 py-1.5 focus:border-editor-accent outline-none" />
+            <div class="mt-2 flex gap-2">
+                <label class="flex items-center gap-1 text-[10px] text-editor-text-muted cursor-pointer">
+                    <input type="checkbox" :checked="modelValue.bgSize === 'bg-cover'"
+                        @change="e => updateClass('bgSize', e.target.checked ? 'bg-cover' : '')"
+                        class="accent-editor-accent"> Cover
+                </label>
+                <label class="flex items-center gap-1 text-[10px] text-editor-text-muted cursor-pointer">
+                    <input type="checkbox" :checked="modelValue.bgPosition === 'bg-center'"
+                        @change="e => updateClass('bgPosition', e.target.checked ? 'bg-center' : '')"
+                        class="accent-editor-accent"> Center
+                </label>
+            </div>
+        </div>
 
     </div>
 </template>

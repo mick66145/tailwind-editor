@@ -13,6 +13,7 @@ import StyleSpacing from './Panels/StyleSpacing.vue'
 import StyleBackground from './Panels/StyleBackground.vue'
 import StyleBorder from './Panels/StyleBorder.vue'
 import StyleLayout from './Panels/StyleLayout.vue'
+import StyleIcon from './Panels/StyleIcon.vue'
 
 const { selectedComponent, selectedId } = useEditor()
 
@@ -88,6 +89,10 @@ const twProps = computed({
           <!-- Text -->
           <StyleTypography v-if="selectedComponent.type === 'text' || selectedComponent.type === 'button'"
             v-model="twProps" />
+
+          <!-- Icon -->
+          <StyleIcon v-if="selectedComponent.type === 'icon'" v-model="twProps" :elementProps="selectedComponent.props"
+            @update:elementProps="newProps => selectedComponent.props = newProps" />
 
           <StyleBackground v-model="twProps" />
           <StyleBorder v-model="twProps" />

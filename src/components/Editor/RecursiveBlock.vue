@@ -52,7 +52,7 @@ const handleContextMenu = (e) => {
     <div v-if="isSelected && !isPreview"
       class="absolute -top-7 right-0 h-7 bg-blue-600 flex items-center px-1 rounded-t-md z-[50] shadow-sm select-none animate-fade-in">
       <span class="text-[10px] font-bold text-white px-2 uppercase cursor-grab active:cursor-grabbing">{{ element.type
-      }}</span>
+        }}</span>
       <div class="w-px h-3 bg-white/20 mx-1"></div>
       <button @click.stop="duplicateComponent(element.id)"
         class="p-1 hover:bg-blue-500 text-white rounded transition-colors" title="Duplicate">
@@ -76,7 +76,7 @@ const handleContextMenu = (e) => {
     <!-- CONTENT: BUTTON -->
     <div v-else-if="element.type === 'button'">
       <button :class="elementClass || 'px-4 py-2 bg-blue-600 text-white rounded'">{{ element.props.text || 'Click Me'
-        }}</button>
+      }}</button>
     </div>
 
     <!-- CONTENT: IMAGE -->
@@ -103,6 +103,24 @@ const handleContextMenu = (e) => {
         title="YouTube video player" frameborder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen></iframe>
+    </div>
+
+    <!-- CONTENT: INPUT -->
+    <div v-else-if="element.type === 'input'">
+      <input type="text" :placeholder="element.props.placeholder || 'Input text...'" :class="elementClass"
+        class="border border-gray-300 rounded px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500" />
+    </div>
+
+    <!-- CONTENT: TEXTAREA -->
+    <div v-else-if="element.type === 'textarea'">
+      <textarea :placeholder="element.props.placeholder || 'Type message...'" :class="elementClass"
+        class="border border-gray-300 rounded px-3 py-2 w-full min-h-[100px] focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+    </div>
+
+    <!-- CONTENT: LABEL -->
+    <div v-else-if="element.type === 'label'">
+      <label :class="elementClass || 'block text-sm font-medium text-gray-700'">{{ element.props.text || 'Label'
+      }}</label>
     </div>
 
     <!-- CONTENT: CONTAINER (NESTED) -->

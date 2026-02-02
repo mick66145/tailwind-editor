@@ -16,7 +16,8 @@ import {
   PhGlobe,
   PhRows,
   PhHeart,
-  PhStar
+  PhStar,
+  PhArrowRight
 } from '@phosphor-icons/vue'
 
 const searchQuery = ref('')
@@ -29,6 +30,9 @@ const widgets = ref([
   { type: 'icon', label: 'Icon', icon: PhStar, category: 'basic' },
   { type: 'video', label: 'Video', icon: PhYoutubeLogo, category: 'basic' },
   { type: 'divider', label: 'Divider', icon: PhMinus, category: 'basic' },
+  { type: 'input', label: 'Input', icon: PhCursorClick, category: 'basic' },
+  { type: 'textarea', label: 'Textarea', icon: PhTextT, category: 'basic' },
+  { type: 'label', label: 'Label', icon: PhTextT, category: 'basic' },
 
   // Structure & Blocks
   { type: 'container', label: 'Container', icon: PhSquare, category: 'block' },
@@ -85,6 +89,18 @@ const cloneWidget = (widget) => {
     icon: {
       icon: 'PhStar',
       tw: { size: 'text-4xl', color: 'text-blue-500' }
+    },
+    input: {
+      placeholder: 'Enter text...',
+      tw: { width: 'w-full', padding: 'p-2', border: 'border border-gray-300', rounded: 'rounded', bg: 'bg-white' }
+    },
+    textarea: {
+      placeholder: 'Enter message...',
+      tw: { width: 'w-full', height: 'h-24', padding: 'p-2', border: 'border border-gray-300', rounded: 'rounded', bg: 'bg-white' }
+    },
+    label: {
+      text: 'Label Text',
+      tw: { display: 'block', margin: 'mb-1', size: 'text-sm', weight: 'font-bold', color: 'text-gray-700' }
     },
 
     // --- CONTAINERS / LAYOUTS ---

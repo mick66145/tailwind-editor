@@ -3,6 +3,7 @@ import { ref, onMounted } from 'vue'
 import { useEditor } from '../../composables/useEditor'
 import { useNotification } from '../../composables/useNotification'
 import ExportModal from './ExportModal.vue'
+import DesignAnalyzerModal from './DesignAnalyzerModal.vue'
 import {
     PhEye,
     PhEyeSlash,
@@ -13,13 +14,15 @@ import {
     PhDesktop,
     PhDeviceTablet,
     PhDeviceMobile,
-    PhTrash
+    PhTrash,
+    PhMagicWand
 } from '@phosphor-icons/vue'
 
 const { isPreview, deviceMode, saveToLocalStorage, loadFromLocalStorage, clearCanvas } = useEditor()
 const { addToast } = useNotification()
 
 const showExportModal = ref(false)
+const showAnalyzerModal = ref(false)
 
 // Actions
 const handleSave = () => {
@@ -122,12 +125,22 @@ onMounted(() => {
                 <span>{{ isPreview ? 'Edit' : 'Preview' }}</span>
             </button>
 
+            <button @click="showAnalyzerModal = true"
+                class="h-8 px-3 bg-linear-to-r from-purple-500 to-pink-500 text-white text-xs font-semibold rounded-sm hover:from-purple-600 hover:to-pink-600 transition-all flex items-center gap-2 shadow-sm"
+                title="AI 設計圖分析">
+                <PhMagicWand :size="16" />
+                <span>AI 分析</span>
+            </button>
+
             <button @click="handleExport"
                 class="h-8 px-3 bg-white text-editor-bg text-xs font-semibold rounded-sm hover:bg-gray-200 transition-colors flex items-center gap-2 shadow-sm">
                 <PhExport :size="16" />
                 <span>Publish</span>
             </button>
         </div>
+
+        <!-- Design Analyzer Modal -->
+        <DesignAnalyzerModal v-model="showAnalyzerModal" />
 
         <!-- Export Modal Component -->
         <ExportModal v-model="showExportModal" />

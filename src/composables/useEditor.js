@@ -149,6 +149,27 @@ export function useEditor() {
         selectedId.value = null
     }
 
+    // 匯入元件樹（從設計圖分析結果）
+    const importComponents = (componentTree) => {
+        if (!Array.isArray(componentTree)) return 0
+
+        // 遞迴重新生成所有 ID
+        const regenerateAllIds = (nodes) => {
+            return nodes.map(node => ({
+                ...node,
+                id: crypto.randomUUID(),
+                children: node.children ? regenerateAllIds(node.children) : []
+            }))
+        }
+
+        const newComponents = regenerateAllIds(componentTree)
+        components.value.push(...newComponents)
+
+        // 計算總節點數
+        const countAll = (nodes) => nodes.reduce((acc, n) => acc + 1 + (n.children ? countAll(n.children) : 0), 0)
+        return countAll(newComponents)
+    }
+
     // Keyboard Shortcuts
     if (typeof window !== 'undefined') {
         window.addEventListener('keydown', (e) => {
@@ -176,6 +197,7 @@ export function useEditor() {
         generateHtml,
         saveToLocalStorage,
         loadFromLocalStorage,
-        clearCanvas
+        clearCanvas,
+        importComponents
     }
 }
